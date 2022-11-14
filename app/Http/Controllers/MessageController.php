@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\DTOMessage;
 use App\Service\MessageService;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class MessageController extends Controller
 {
@@ -14,14 +14,23 @@ class MessageController extends Controller
     {
     }
 
-    public function create(): string
+    public function create()
     {
-        return $this->service->createMessage();
+//        $message = json_decode(request()->getContent(), true);
+//        return $this->service->createMessage($message);
+        return view('form');
     }
 
-    public function index(): Factory|View|Application
+
+    public function store(): JsonResponse
     {
-        $this->service->indexAll();
-        return view('table');
+        $this->service->createMessage(new DTOMessage());
+        return new JsonResponse('', 200);
+    }
+
+    public function index(): JsonResponse
+    {
+        $pag = $this->service->indexAll();
+        return new JsonResponse($pag, 200);
     }
 }

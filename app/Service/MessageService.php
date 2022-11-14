@@ -4,19 +4,22 @@
 namespace App\Service;
 
 
+use App\DTO\DTOMessage;
 use App\Models\Message;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MessageService
 {
-    public function createMessage(): string
+    public function createMessage(DTOMessage $message)
     {
-        Message::create() ;
-        return 'created';
+        return Message::create(['name' => $message->name,
+            'email' => $message->email,
+            'message' => $message->message,
+            'create_date' => date('Y-m-d H:i:s')]);
     }
 
-    public function indexAll(): Collection
+    public function indexAll(): LengthAwarePaginator
     {
-        return Message::all();
+        return Message::orderByDesc('create_date')->paginate(2);
     }
 }

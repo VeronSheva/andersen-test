@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MessageController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main');
 });
-Route::get('/message/create', [MessageController::class, 'create']);
-Route::get('/message/index', [MessageController::class, 'index']);
+Route::post('/api/message/store', [MessageController::class, 'store']);
+Route::get('/api/message/index', [MessageController::class, 'index']);
